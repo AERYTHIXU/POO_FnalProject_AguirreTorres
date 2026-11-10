@@ -1,24 +1,55 @@
-# Compiled class file
+# ==========================================
+# 1. ARCHIVOS COMPILADOS Y EJECUTABLES DE JAVA
+# ==========================================
 *.class
-
-# Log file
-*.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
 *.jar
 *.war
-*.nar
 *.ear
+*.nar
 *.zip
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# Carpetas de salida de compilación comunes
+bin/
+build/
+out/
+target/
+
+# Logs de errores de Java
+*.log
 hs_err_pid*
 replay_pid*
+
+# ==========================================
+# 2. CONFIGURACIONES DE VS CODE Y OTROS IDEs
+# ==========================================
+# Ignora la carpeta de configuración local de VS Code
+.vscode/
+*.code-workspace
+
+# Por si abres el proyecto en otros IDEs (Eclipse, NetBeans, IntelliJ)
+.metadata/
+.classpath
+.project
+.settings/
+.idea/
+*.iml
+
+# ==========================================
+# 3. ARCHIVOS DEL SISTEMA OPERATIVO
+# ==========================================
+# Linux / Pop!_OS
+*~
+.directory
+
+# Windows
+Thumbs.db
+Desktop.ini
+ehthumbs.db
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
