@@ -1,38 +1,28 @@
 package domain;
 
-public class Table {
+public abstract class Table {
     public enum TableStatus {
         AVAIBLE,
-        OCCUPIED
+        OCCUPIED,
+        RESERVED
     }
 
-    private int id;
     private int capacity;
     private TableStatus status;
 
     public Table(int id, int capacity) {
-        setId(id);
         setCapacity(capacity);
+        setStatus(TableStatus.AVAIBLE);
     }
 
     ///// BASIC GETTERS AND SETTERS //////
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        if (id < 0) {
-            throw new IllegalArgumentException("Table ID must be greater than 0.");
-        }
-        this.id = id;
-    }
 
     public int getCapacity() {
         return capacity;
     }
 
     public void setCapacity(int capacity) {
-        if (capacity < 0) {
+        if (capacity <= 0) {
             throw new IllegalArgumentException("Table capacity must be greater than 0.");
         }
         this.capacity = capacity;
@@ -43,6 +33,16 @@ public class Table {
     }
 
     public void setStatus(TableStatus status) {
+        if (status == null) {
+            throw new IllegalArgumentException("Table status cannot be null");
+        }
         this.status = status;
     }
+
+    ////// DOMAIN METHODS /////
+    public boolean isAvaible() {
+        return this.status == TableStatus.AVAIBLE;
+    }
+
+    public abstract String getTableType();
 }
