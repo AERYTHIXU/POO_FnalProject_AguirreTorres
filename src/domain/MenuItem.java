@@ -1,17 +1,23 @@
 package domain;
 
 public abstract class MenuItem {
+    protected String id;
     private String name;
     private String description;
     private double price;
     
-    public MenuItem(String name, String description, double price) {
+    public MenuItem(int numericId, String name, String description, double price) {
         setName(name);
         setDescription(description);
         setPrice(price);
+        setId(numericId);
     }
 
     ///// BASIC GETTERS AND SETTERS /////
+    
+    public abstract String getId();
+    public abstract void setId(int id);
+
     public String getName() {
         return name;
     }
