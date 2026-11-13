@@ -31,13 +31,12 @@ public class Menu {
         return items;
     }
 
-    public boolean removeItem(String id) {
+    public void removeItem(String id) {
         MenuItem item = searchItemById(id); {
-            if (item!= null) {
-                items.remove(item);
-                return true;
+            if (item == null) {
+                throw new IllegalArgumentException("There is no item whit this ID");
             }
-            return false;
+            items.remove(item);
         }
     }
 }
