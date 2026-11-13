@@ -1,27 +1,36 @@
 package domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import util.IdManager;
+
 public class PermanentTable extends Table {
 
     private String id;
-    private static int PermanentTableCounter = 0;
+    private static final String PREFIX = "P_TAB";
 
-    public PermanentTable(int id, int capacity) {
-        super(id, capacity);
+    private final static List<String> existingIds = new ArrayList<>(); 
+
+    public PermanentTable(int numericId, int capacity, String id) {
+        super(capacity);
+        setId(numericId);
     }
 
-    private static String generateTablePermanentId() {
-        String generated = String.format("TP%002d", PermanentTableCounter);
-        return generated;
-    }
     ///// BASIC GETTERS AND SETTERS /////
+    @ Override
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        String permanentTableId = generateTablePermanentId(); 
-        this.id = permanentTableId;
-    }    
+    @Override
+    public void setId(int numericId) {
+        this.id = IdManager.generateAndRegisterId(numericId, PREFIX, id, existingIds);
+    }
+
+    public static String getPrefix() {
+        return PREFIX;
+    }
 
     @ Override
     public String getTableType() {

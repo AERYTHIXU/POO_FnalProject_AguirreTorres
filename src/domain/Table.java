@@ -1,6 +1,7 @@
 package domain;
 
 public abstract class Table {
+
     public enum TableStatus {
         AVAIBLE,
         OCCUPIED,
@@ -10,7 +11,7 @@ public abstract class Table {
     private int capacity;
     private TableStatus status;
 
-    public Table(int id, int capacity) {
+    public Table(int capacity) {
         setCapacity(capacity);
         setStatus(TableStatus.AVAIBLE);
     }
@@ -38,10 +39,13 @@ public abstract class Table {
         }
         this.status = status;
     }
+    
+    public abstract String getId();
+    public abstract void setId(int numericId);
 
-    ////// DOMAIN METHODS /////
+    ///// DOMAIN METHODS /////
     public boolean isAvaible() {
-        return this.status == TableStatus.AVAIBLE;
+        return this.getStatus() == TableStatus.AVAIBLE;
     }
 
     public abstract String getTableType();
