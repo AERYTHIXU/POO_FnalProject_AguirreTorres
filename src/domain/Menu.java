@@ -1,11 +1,13 @@
 package domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Menu {
     private List<MenuItem> items;
 
     public Menu() {
+        this.items = new ArrayList<>();
     }
 
     /////MENU ITEM CRUD /////   
@@ -18,7 +20,7 @@ public class Menu {
 
     public MenuItem searchItemById(String id) {
         for (MenuItem item : items) {
-            if (item.getId() == id) {
+            if (item.getId().equalsIgnoreCase(id)) {
                 return item;
             }
         }
