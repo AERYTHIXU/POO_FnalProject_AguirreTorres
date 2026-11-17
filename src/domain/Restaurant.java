@@ -26,7 +26,7 @@ public class Restaurant {
     }
 
     public List<Table> getTables() {
-        return tables;
+        return new ArrayList<>(tables);
     }
 
     public Menu getMenu() {

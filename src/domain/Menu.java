@@ -28,7 +28,7 @@ public class Menu {
     }
 
     public List<MenuItem> getAllItems() {
-        return items;
+        return new ArrayList<>(items);
     }
 
     public void removeItem(String id) {
