@@ -49,7 +49,7 @@ public class Bill {
     }
 
     public List<MenuItem> getConsumedItems() {
-        return consumedItems;
+        return  new ArrayList<>(consumedItems);
     }
 
     public BillStatus getStatus() {
