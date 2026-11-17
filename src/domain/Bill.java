@@ -42,6 +42,9 @@ public class Bill {
     }
 
     public void setTable(Table table) {
+        if (table == null) {
+            throw new IllegalArgumentException("Bill must be associated whit a table.");
+        }
         this.table = table;
     }
 
