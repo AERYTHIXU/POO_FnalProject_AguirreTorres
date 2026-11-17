@@ -7,6 +7,10 @@ public class Restaurant {
     private String name;
     private List<Table> tables;
     private Menu menu;
+
+    // Separate lists for bills.
+    private List<Bill> pendingBills;
+    private List<Bill> paidBills;
     
     public Restaurant(String name) {
         setName(name);
@@ -38,6 +42,56 @@ public class Restaurant {
             throw new IllegalArgumentException("Menu field cannot be empty.");
         }
         this.menu = menu;
+    }
+
+    ///// BILLS MANAGEMENTS /////
+    public Bill createBillForTable(int numericId, String tableId) {
+        Table table = searchTableById(tableId);
+        if (table == null) {
+            throw new IllegalArgumentException("There is no table with this ID.");
+        }
+
+        Bill newBill = new Bill(numericId, table);
+        
+        if (searchBillById(newBill.getId()) != null) {
+            throw new IllegalArgumentException("A bill with this ID already exists.");
+        }
+
+        pendingBills.add(newBill);
+        
+        // Al abrirle cuenta a la mesa, pasa a estar ocupada automáticamente
+        table.setStatus(Table.TableStatus.OCCUPIED);
+        
+        return newBill;
+    }
+
+    public Bill searchBillById(String id) {
+        if (id == null) return null;
+        
+        for (Bill bill : pendingBills) {
+            if (bill.getId().equalsIgnoreCase(id)) {
+                return bill;
+            }
+        }
+        
+        for (Bill bill : paidBills) {
+            if (bill.getId().equalsIgnoreCase(id)) {
+                return bill;
+            }
+        }
+        
+        return null;
+    }
+
+    public void payBill(String billId) {
+        Bill bill = searchBillById(billId);
+        if (bill == null) {
+            throw new IllegalArgumentException("There is no bill with this ID.");
+        }
+        
+        if (bill.getStatus() == Bill.BillStatus.PAID) {
+            throw new IllegalStateException("This bill has already been paid.");
+        }
     }
 
     ///// TABLES CRUD /////
