@@ -32,11 +32,11 @@ public class Menu {
     }
 
     public void removeItem(String id) {
-        MenuItem item = searchItemById(id); {
-            if (item == null) {
-                throw new IllegalArgumentException("There is no item whit this ID");
-            }
-            items.remove(item);
+        MenuItem item = searchItemById(id); 
+        if (item == null) {
+            throw new IllegalArgumentException("There is no item whit this ID");
         }
+        MenuItem.unregisterId(item.getId());
+        items.remove(item);
     }
 }

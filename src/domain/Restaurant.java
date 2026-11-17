@@ -43,8 +43,8 @@ public class Restaurant {
     ///// TABLES CRUD /////
     
     public void createPermanentTable(int numericId, int capacity)  {
-        Table newTable = new PermanentTable(numericId, capacity, name);
-        if (searchTablebyId(newTable.getId()) != null) {
+        Table newTable = new PermanentTable(numericId, capacity);
+        if (searchTableById(newTable.getId()) != null) {
             throw new IllegalArgumentException("A table with this ID already exists.");
         }
         tables.add(newTable);
@@ -52,13 +52,13 @@ public class Restaurant {
 
     public void createTemporaryTable(int numericId, int capacity, String note) {
         Table newTable = new TemporaryTable(numericId, capacity, note);
-        if (searchTablebyId(newTable.getId()) != null) {
+        if (searchTableById(newTable.getId()) != null) {
             throw new IllegalArgumentException("A table with this ID already exists.");
         }
         tables.add(newTable);
     }
 
-    public Table searchTablebyId(String id) {
+    public Table searchTableById(String id) {
         for (Table table : tables) {
             if (table.getId().equalsIgnoreCase(id)) {
                 return table;
@@ -68,9 +68,42 @@ public class Restaurant {
     }
 
     public void removeTableById(String id) {
-        Table table = searchTablebyId(id);
+        Table table = searchTableById(id);
         if (table == null) {
-            throw new IllegalArgumentException("there is no table with this ID.");
+            throw new IllegalArgumentException("There is no table with this ID.");
         }
+        Table.unregisterId(table.getId());
+        tables.remove(table);
+    }
+
+    ///// TABLE OPERATIONS /////
+    
+    public void occupyTable(String id) {
+        Table table = searchTableById(id);
+        if (table == null) {
+            throw new IllegalArgumentException("There is no table with this ID.");
+        }
+        if (!table.isAvailable()) {
+            throw new IllegalStateException("Table is already occupied or reserved.");
+        }
+        table.setStatus(Table.TableStatus.OCCUPIED);
+    }
+
+    public void freeTable(String id) {
+        Table table = searchTableById(id);
+        if (table == null) {
+            throw new IllegalArgumentException("There is no table with this ID.");
+        }
+        table.setStatus(Table.TableStatus.AVAILABLE);
+    }
+
+    public List<Table> getAvailableTables() {
+        List<Table> available = new ArrayList<>();
+        for (Table table : tables) {
+            if (table.isAvailable()) {
+                available.add(table);
+            }
+        }
+        return available;
     }
 }

@@ -1,10 +1,18 @@
 package domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import util.IdManager;
+
 public abstract class MenuItem {
+
     protected String id;
     private String name;
     private String description;
     private double price;
+
+        private static final List<String> existingIds = new ArrayList<>();
     
     public MenuItem(int numericId, String name, String description, double price) {
         setName(name);
@@ -16,7 +24,11 @@ public abstract class MenuItem {
     ///// BASIC GETTERS AND SETTERS /////
     
     public abstract String getId();
-    public abstract void setId(int id);
+    public abstract String getPrefix();
+
+    public void setId(int numericId) {
+        this.id = IdManager.generateAndRegisterId(numericId, getPrefix(), getId(), existingIds);
+    }
 
     public String getName() {
         return name;
@@ -26,7 +38,7 @@ public abstract class MenuItem {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Menu item Name cannot be empty.");
         }
-        this.name = name;
+        this.name = name.trim();
     }
 
     public String getDescription() {
@@ -34,7 +46,10 @@ public abstract class MenuItem {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        if (description == null || description.isBlank()) {
+            throw new IllegalArgumentException("Menu Item Description cannot be empty.");
+        }
+        this.description = description.trim();
     }
 
     public double getPrice() {
@@ -46,5 +61,10 @@ public abstract class MenuItem {
             throw new IllegalArgumentException("Menu Item PRICE must be greater than 0.");
         }
         this.price = price;
+    }
+
+    ///// DOMAIN METHODS /////
+    public static void unregisterId(String id) {
+        existingIds.remove(id);
     }
 }

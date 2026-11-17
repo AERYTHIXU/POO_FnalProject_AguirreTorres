@@ -1,16 +1,16 @@
 package domain;
 
-import java.util.ArrayList;
-
 public class BeverageItem extends MenuItem {
     private Boolean containsAlcohol;
     private double volumeMl;        
-    
-    private static final ArrayList<String> existingIds = new ArrayList<>();
 
+    private static final String PREFIX = "BI"; // Beverage Item -> BI
+
+    
     public BeverageItem(int numericId, String name, String description, double price, Boolean containsAlcohol,
             double volumeMl) {
         super(numericId, name, description, price);
+        setId(numericId);
         setContainsAlcohol(containsAlcohol);
         setVolumeMl(volumeMl);
     }
@@ -18,27 +18,12 @@ public class BeverageItem extends MenuItem {
     ///// BASIC GETTERS AND SETTERS /////
     @Override
     public String getId() {
-        return this.getId();
+        return id;
     }
 
     @Override
     public void setId(int numericId) {
-        if (numericId < 0) {
-            throw new IllegalArgumentException("ID number cannot be negative.");
-        }
-        String formatedId = String.format("%s%03d", this.getPrefix(), numericId); 
-
-        if (existingIds.contains(formatedId)) {
-            throw new IllegalArgumentException("The ID " + formatedId + " is already in use.");
-
-        }
-
-        if(this.getId() != null) {
-            existingIds.remove(this.getId());
-        }
-
-        existingIds.add(formatedId);
-        this.id = formatedId;
+        super.setId(numericId);
     }
 
     public boolean isContainsAlcohol() {
@@ -63,8 +48,8 @@ public class BeverageItem extends MenuItem {
         this.volumeMl = volumeMl;
     }
 
-    ///// DOMAIN METHODS /////
-    private String getPrefix() {
-        return "BI"; // Beverage Item -> BI
+    @Override
+    public String getPrefix() {
+        return PREFIX;
     }
 }

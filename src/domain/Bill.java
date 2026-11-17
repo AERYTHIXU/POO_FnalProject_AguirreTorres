@@ -1,29 +1,40 @@
 package domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import util.IdManager;
+
 public class Bill {
+
+    public enum BillStatus {
+        PENDING,
+        PAID,
+    }
+
     private String id;
     private Table table;
     private List<MenuItem> consumedItems;
-    Boolean paid;
-    
-private final static 
+    private BillStatus status;
 
-    public Bill(String id, Table table, List<MenuItem> consumedItems, boolean paid) {
-        this.id = id;
-        this.table = table;
-        this.consumedItems = consumedItems;
-        this.paid = paid;
+    private final static String PREFIX = "BLL";
+
+    private static final ArrayList<String> existingBillIds = new ArrayList<>();
+
+    public Bill(int numericId, Table table) {
+        setId(numericId);
+        setTable(table);
+        this.consumedItems = new ArrayList<>(); 
+        this.status = BillStatus.PENDING; 
     }
 
-    ///// BASIC GETTERS AND SETTERS /////
+    ///// BASIC GETTERS Y SETTERS /////
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId(int numericId) {
+        this.id = IdManager.generateAndRegisterId(numericId, PREFIX, this.getId(), existingBillIds);
     }
 
     public Table getTable() {
@@ -34,21 +45,54 @@ private final static
         this.table = table;
     }
 
-    public boolean isPaid() {
-        return paid;
+    public List<MenuItem> getConsumedItems() {
+        return consumedItems;
     }
 
-    public void setPaid(Boolean paid) {
-        if (paid == null) {
-            throw new IllegalArgumentException("The paid field cannot be empty.");
+    public BillStatus getStatus() {
+        return status;
+    }
+    public void setStatus(BillStatus status) {
+        if (status == null) {
+            throw new IllegalArgumentException("Bill Status cannot be null.");
         }
-        this.paid = paid;
+        this.status = status;
     }
 
-    ///// DOMAIN METHODS /////
-    private String getPrefix() {
-        return "BILL";
+    ///// CONSUMED ITEMS CRUD /////
+    public void addConsumedItem(MenuItem item) {
+        if (item == null) {
+            throw new IllegalArgumentException("The item to be added cannot be empty.");
+        } if (this.getStatus() == BillStatus.PAID) {
+            throw new IllegalArgumentException("Cannot add items to a bill that is already paid");
+        }
+        consumedItems.add(item);
     }
-    
-    
+
+    public void removeItem(MenuItem item) {
+        if (!consumedItems.remove(item)) {
+            throw new IllegalArgumentException("Item not found in this bill");
+        }
+    }
+
+    ///// DOMAIN METHODS) /////
+    public double calculateTotal() {
+        double total = 0.0;
+        for (MenuItem item : consumedItems) {
+            total += item.getPrice();
+        }
+        return total;
+    }
+
+    public void payBill() {
+        if (this.getStatus() == BillStatus.PAID) {
+            throw new IllegalArgumentException("This bill has already been paid.");
+        }
+        this.setStatus(BillStatus.PAID);
+
+        if (this.table != null) {
+            this.table.setStatus(Table.TableStatus.AVAILABLE);
+        }
+    }
+
 }
