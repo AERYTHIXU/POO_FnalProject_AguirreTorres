@@ -10,7 +10,6 @@ public class BeverageItem extends MenuItem {
     public BeverageItem(int numericId, String name, String description, double price, Boolean containsAlcohol,
             double volumeMl) {
         super(numericId, name, description, price);
-        setId(numericId);
         setContainsAlcohol(containsAlcohol);
         setVolumeMl(volumeMl);
     }
